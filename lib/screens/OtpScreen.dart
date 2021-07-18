@@ -42,47 +42,37 @@ class OtpState_ extends State<Otp> {
       child: Container(
         child: Column(
           children: [
-            //title()
+            customAppBar()
           ],
         ),
       ),
     );
   }
 
-  Widget title(){
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      width: MediaQuery.of(context).size.width,
-      child: Text("OTP Verification"),
-    );
-  }
-
   @override
   void initState() {
-    main();
+
     print("Hello World");
     super.initState();
 
   }
 
-  void main() async {
-    print(getMeSomeFood());
-    print(await getMeSomethingBetter());
-    maybeSomethingSweet().then((String value) {
-      print(value);
-    });
+  Widget customAppBar(){
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 10),
+      margin: EdgeInsets.only(top: 25),
+      width: MediaQuery.of(context).size.width,
+      height: AppBar().preferredSize.height,
+      color: Colors.transparent,
+      child: Text(
+        "OTP Verification",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.blueGrey
+        ),
+      ),
+    );
+  }
 
-  }
-  Future<String> getMeSomeFood() async {
-    return "an apple";
-  }
-  Future<String> getMeSomethingBetter() async {
-    return "a burger?";
-  }
-  Future<String> maybeSomethingSweet() async {
-    return "a chocolate cake!!";
-  }
-  Future<String> bye() async{          //will not compile, add async
-    return "see you soon! ";
-  }
 }
