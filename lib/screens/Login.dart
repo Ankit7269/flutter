@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/screens/OtpScreen.dart';
+import 'package:flutter_tutorial/screens/SignUpScreen.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,26 +25,30 @@ class LoginState_ extends State<Login> {
   }
 
   Widget Main() {
-    return Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/login_bg.jpg"), fit: BoxFit.cover)),
-        child: Container(
-            child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                  // color: Colors.red,
-                  ),
-            ),
-            Expanded(
-              flex: 1,
-              child: centerPart(),
-            ),
-            Expanded(flex: 1, child: bottomPart()),
-          ],
-        )));
+    return SingleChildScrollView(
+      child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("images/login_bg.jpg"), fit: BoxFit.cover)),
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                    // color: Colors.red,
+                    ),
+              ),
+              Expanded(
+                flex: 1,
+                child: centerPart(),
+              ),
+              Expanded(flex: 1, child: bottomPart()),
+            ],
+          ))),
+    );
   }
 
   Widget centerPart() {
@@ -152,6 +157,15 @@ class LoginState_ extends State<Login> {
         )
     );
   }
+
+  void clickedSignUp(){
+    Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => SignUpScreen()
+        )
+    );
+  }
+
   Widget signup() {
     return Container(
       padding: EdgeInsets.all(10),
@@ -161,13 +175,17 @@ class LoginState_ extends State<Login> {
             child: Text("don't have account?"),
           ),
           Expanded(
-              child: Container(
-            padding: EdgeInsets.only(left: 5),
-            child: Text(
-              "Signup",
-              style: TextStyle(color: Colors.blueAccent),
-            ),
-          )),
+              child: GestureDetector(
+                onTap: clickedSignUp,
+                child: Container(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Signup",
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              )
+          ),
           Expanded(
             child: Center(
                 child: GestureDetector(
@@ -223,6 +241,7 @@ class LoginState_ extends State<Login> {
           controller: _editingController,
         ),
       );
+
     return InkWell(
         onTap: () {
           setState(() {

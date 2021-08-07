@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_tutorial/screens/MyDrawer.dart';
+import 'package:flutter_tutorial/utils/CustomColors.dart';
 
 class Otp extends StatefulWidget {
   @override
@@ -7,6 +10,9 @@ class Otp extends StatefulWidget {
 
 class OtpState_ extends State<Otp> {
   BuildContext context;
+  bool _isEditingText = false;
+  TextEditingController _editingController;
+  String initialText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -16,34 +22,34 @@ class OtpState_ extends State<Otp> {
           Navigator.pop(context);
         },
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.transparent,
-        //   title: Text("OTP",
-        //   style: TextStyle(
-        //       backgroundColor: Colors.transparent
-        //   ),),
-        // ),
-          drawerEnableOpenDragGesture: false,
-          body: Main()
+          drawerEnableOpenDragGesture:true,
+          drawer: MyDrawer(),
+          resizeToAvoidBottomInset: false,
+          body: Main(),
+          // body: SingleChildScrollView(),
       ),
     );
   }
 
   Widget Main() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/login_bg.jpg"),
-              fit: BoxFit.cover
-          )
-      ),
+    return SingleChildScrollView(
       child: Container(
-        child: Column(
-          children: [
-            customAppBar()
-          ],
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/login_bg.jpg"),
+                fit: BoxFit.cover
+            )
+        ),
+        child: Container(
+          child: Column(
+            children: [
+              customAppBar(),
+              topPart(),
+              bottomPart()
+            ],
+          ),
         ),
       ),
     );
@@ -54,7 +60,122 @@ class OtpState_ extends State<Otp> {
 
     print("Hello World");
     super.initState();
+    _editingController = TextEditingController(text: initialText);
+  }
 
+  Widget pinText(){
+    return Text(
+      "",
+      style: TextStyle(
+          color: Colors.black54,
+          fontWeight: FontWeight.bold
+      ),
+    );
+  }
+
+  Widget pinRow(){
+    return Container(
+      height: 35,
+      width: MediaQuery.of(context).size.width,
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: CustomColors.borderColor,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(7))
+            ),
+            margin: EdgeInsets.only(left: 10),
+            child: _editTitleTextField(),
+          ),
+          Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: CustomColors.borderColor,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(7))
+            ),
+            margin: EdgeInsets.only(left: 10),
+            child: _editTitleTextField(),
+          ),
+          Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: CustomColors.borderColor,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(7))
+            ),
+            margin: EdgeInsets.only(left: 10),
+            child: _editTitleTextField(),
+          ),
+          Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: CustomColors.borderColor,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(7))
+            ),
+            margin: EdgeInsets.only(left: 10),
+            child: _editTitleTextField(),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget topPart(){
+    return Expanded(
+        flex: 2,
+        child: Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          alignment: Alignment.centerLeft,
+          child: Container(
+            // color: Colors.red,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  // color: Colors.blueGrey,
+                  child: Text(
+                    "Enter OTP",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal
+                    ),
+                  ),
+                ),
+                pinRow()
+              ],
+            ),
+          )
+        )
+    );
+  }
+
+  Widget bottomPart(){
+    return Expanded(
+        flex: 1,
+        child: Container(
+          color: Colors.green,
+        )
+    );
   }
 
   Widget customAppBar(){
@@ -73,6 +194,56 @@ class OtpState_ extends State<Otp> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
+  }
+
+  Widget _editTitleTextField() {
+    if (_isEditingText)
+      return Container(
+        child: TextField(
+          maxLength: 1,
+          decoration: InputDecoration(
+            counterText: "",
+          ),
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          cursorColor: Colors.grey,
+          style: TextStyle(
+              color: Colors.grey,
+              letterSpacing: 1,
+              decorationThickness: 0,
+              decoration: TextDecoration.none
+          ),
+          onSubmitted: (newValue) {
+            setState(() {
+              initialText = newValue;
+              _isEditingText = false;
+            });
+          },
+          autofocus: true,
+          controller: _editingController,
+        ),
+      );
+
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _isEditingText = true;
+          });
+        },
+        child: Text(
+          initialText,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 15.0,
+          ),
+        ));
   }
 
 }
